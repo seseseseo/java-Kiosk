@@ -10,6 +10,7 @@ public class MenuItem {
         this.price = price;
         this.description = description;
     }
+    //getter
     public String getName() {
         return name;
     }
@@ -20,6 +21,7 @@ public class MenuItem {
         return description;
     }
 
+    //setter
     public void setPrice(double price) {
         this.price = price;
     }
