@@ -20,6 +20,13 @@ public class MenuItem {
         return description;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return String.format("%-15s | W %.1f | %s", name, price, description);
