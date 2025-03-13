@@ -19,13 +19,23 @@ public class Kiosk {
     }
     public void start(){
         while (true){
+
             System.out.println("[ SHAKESHACK MENU ]");
             for(int i=0; i< menuItems.size(); i++){
                 System.out.println((i+1) + ". "+ menuItems.get(i));
             } System.out.println("0. 종료          | 종료");
+            int choice;
 
-            System.out.print("메뉴 번호를 선택하세요: ");
-            int choice = getUserInput();  //사용자의 입력을 받음
+            while(true){
+                System.out.print("메뉴 번호를 선택하세요: ");
+                choice = getUserInput();  //사용자의 입력을 받음
+                if(choice != -1) {
+                    System.out.println("올바른 번호를 입력해주세요.");
+                    break;
+                }
+            }
+
+
             if (choice > 0 && choice <= menuItems.size()) {
                 System.out.println("선택한 메뉴는: " + menuItems.get(choice-1));
                 System.out.println();
