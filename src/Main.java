@@ -22,7 +22,8 @@ public class Main {
         drinkMenu.addItem(new MenuItem("Lemonade", 3.0, "상큼한 레모네이드"));
 
         // dessertMenu 객체 생성하면서 카테고리 이;름 설정
-        Menu dessertMenu = new Menu("Dessert Menu");
+        Menu dessertMenu
+                = new Menu("Dessert Menu");
         dessertMenu.addItem(new MenuItem("Bread",4.0,"갓 구운 빵"));
         dessertMenu.addItem(new MenuItem("Sandwich",5.0,"따끈한 샌드위치"));
 
