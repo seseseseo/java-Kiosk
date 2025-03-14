@@ -2,7 +2,9 @@ package example.kiosk;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 // 키오스크 프로그램의 메뉴를 관리하고 사용자 입력을 처리
 public class Kiosk {
@@ -53,9 +55,21 @@ public class Kiosk {
     // [ 메인메뉴 ] 1. 버거 2.음료 3.디저트
     private void displayMainMenu() {
         System.out.println("[ MAIN MENU ]");
-        for(int i=0; i< categories.size(); i++){
-            System.out.println((i+1) + ". "+ categories.get(i));
-        } System.out.println("0. 종료          | 종료");
+        // [ 메인메뉴 ]
+        IntStream.range(0, categories.size())
+                .forEach( i -> System.out.println((i+1) +". " + categories.get(i).toString()));
+        //
+        int choice = getUserInput();
+        Optional<Menu> selectedMenu = IntStream.range(0, categories.size())
+                .filter(i -> i == ( choice - 1 )) // 1-based 입력값을 0-based 인덱스로 변환
+                .mapToObj(categories::get)
+                .findFirst();
+        selectedMenu.ifPresentOrElse(
+                menu -> {
+                    displayCategory(choice);
+                },
+                () -> System.out.println("잘못된 입력입니다. 1부터 " + categories.size() + " 사이의 숫자를 입력하세요.")
+        );
 
         // 장바구니가 비어져있지 않다면 다음 기능이 보이게
         if(!cart.isEmpty()){
@@ -65,17 +79,18 @@ public class Kiosk {
         }
         System.out.print("메뉴를 선택하세요: ");
     }
-    // [카테고리 1.쉑쉑버거 2.불고기버거 3.등등 ]
+    // [메뉴아이템 1.쉑쉑버거 2.불고기버거 3.등등 ]
 
     private void displayCategory(int categoryChoice) {
         Menu selectedCategory = categories.get(categoryChoice -1);
         System.out.println("\n[ " + selectedCategory.getCategory() + " ]");
-
-        //  메뉴 아이템 가져오기 1. 쉑쉑버거 2.치즈버거 3.불고기
         var items = selectedCategory.getMenuItem();
-        for(int i=0; i< items.size(); i++){
-            System.out.println((i+1) + ". "+ items.get(i));
-        }
+
+        // [스트림]으로 메뉴아이템
+        IntStream.range(0, items.size())
+                .forEach(i -> System.out.println((i+1) + ". " + items.get(i)));
+
+
         //메뉴 선택 안내
         System.out.println("0. 뒤로 가기");
         System.out.println();
@@ -104,12 +119,14 @@ public class Kiosk {
     private void showCart() {
         System.out.println("\n아래와 같이 주문 하시겠습니까?");
         System.out.println("\n[ Orders ]");
-        double totalPrice = 0;
         //cart에 있는 모든 MenuItem 객체를 하나씩 꺼내서 menu 변수에 할당
-        for (MenuItem item : cart) {
-            System.out.println(item.toString());
-            totalPrice += item.getPrice();
-        }
+//        for (MenuItem item : cart) {
+//            System.out.println(item.toString());
+//            totalPrice += item.getPrice();
+//        }
+
+        // [스트림]을 장바구니에 담긴 것 출력
+        double totalPrice = cart.stream().mapToDouble(MenuItem::getPrice).sum();
         System.out.println("\n[ Total ]");
         System.out.println("W " +totalPrice);
 
